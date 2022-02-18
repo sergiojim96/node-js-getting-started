@@ -1,10 +1,16 @@
-const express = require('express')
-const path = require('path')
-const PORT = process.env.PORT || 5000
+const express = require('express');
+const app = express();
+const path = require('path');
+const router = express.Router();
 
-express()
-  .use(express.static(path.join(__dirname, 'public')))
-  .set('views', path.join(__dirname, 'views'))
-  .set('view engine', 'ejs')
-  .get('/', (req, res) => res.render('pages/index'))
-  .listen(PORT, () => console.log(`Listening on ${ PORT }`))
+router.get('/',function(req,res){
+  res.sendFile(path.join(__dirname+'/index.html'));
+  //__dirname : It will resolve to your project folder.
+});
+
+//add the router
+app.use('/', router);
+app.use('/', express.static(__dirname + '/'));
+//app.get('/', (req, res) => res.render('index'));
+app.get('/favicon.ico', (req, res) => res.status(204));
+app.listen(process.env.port || 5000);
